@@ -47,7 +47,7 @@ export default class ToDoView {
 
         for (let i = 0; i < lists.length; i++) {
             let list = lists[i];
-            this.appendNewListToView(list);//new
+            this.appendNewListToView(list);
         }
     }
 
