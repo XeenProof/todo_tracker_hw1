@@ -255,4 +255,13 @@ export default class ToDoModel {
         item.setStatus(newStatus);
         this.view.viewList(this.currentList);
     }
+
+    /**
+     * When X is clicked
+     */
+    closeList(){
+        this.view.clearItemsList();//
+        this.tps.clearAllTransactions();//temp
+        this.currentList = null;
+    }
 }

@@ -69,3 +69,40 @@
 .todo_button:hover {
     background-color: var(--swatch-contrast);
 }
+
+.modal_button {
+    cursor:pointer;
+    background-color: var(--swatch-contrast);
+}
+
+.modal_button:hover {
+    color:green
+    /*background-color: var(--swatch-complement);*/
+}
+
+.modal {
+    color: white;
+    background-color: black;
+    border-radius: 3px;
+}
+
+.header {
+    border-bottom: 2px dotted;
+    color: var(--light-gray);
+}
+
+.modal-overlay {
+    background-color: rgba(0,0,0,0.4);
+}
+/*
+.modal-button {
+    background-color: var(--button-transparent);
+    font-family: 'Consolas';
+    border: none;
+    transition: 0.1s ease-in-out;
+    color: var(--light-gray);
+    text-align: center;
+    font-size: 12pt;
+}
+*/
+

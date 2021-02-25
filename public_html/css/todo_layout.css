@@ -71,3 +71,49 @@
 .list-item-control {
     width: 20%;
 }
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 35%;
+    top: 25%;
+    /* padding: 1%; */
+    width: 30%;
+    animation: appear_in .3s ease;
+}
+
+.modal-header {
+    margin: 4%;
+    display: flex;
+    flex-direction: row;
+    height: 1%;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.modal-overlay {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.modal-button {
+    margin-bottom: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+    width: 20%;
+    padding: 2%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    position: relative;
+}

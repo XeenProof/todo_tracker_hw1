@@ -24,16 +24,13 @@ export default class ToDoController {
             appModel.redo();
         }
         document.getElementById("delete-list-button").onmousedown = function() {
-            if (confirm("Are you sure you want to delete this list?")){
-                appModel.removeCurrentList();
-            }
+            appModel.view.confirmModal();
         }
         document.getElementById("add-item-button").onmousedown = function() {
             appModel.addNewItemTransaction();
         }  
         document.getElementById("close-list-button").onclick = function(){
-            appModel.view.clearItemsList();//IMPORTANT: go back to check clearTransactions
-            appModel.tps.clearAllTransactions();//temp
+            appModel.closeList();
         }
     }
     
@@ -65,5 +62,9 @@ export default class ToDoController {
 
     editStatus(item, newDate){
         this.model.editStatusTransaction(item, newDate);
+    }
+
+    deleteList(){
+        this.model.removeCurrentList();
     }
 }
