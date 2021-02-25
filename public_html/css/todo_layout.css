@@ -39,6 +39,7 @@
 }
 
 #todo-list-items-div{
+    height: 150%;
     display: flex;
     flex-direction: column;
 }

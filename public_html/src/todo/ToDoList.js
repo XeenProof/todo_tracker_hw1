@@ -13,7 +13,7 @@ export default class ToDoList {
      */
     constructor(initId) {
         this.id = initId;
-        this.name = "Unnknown";
+        this.name = "Unknown List";
         this.items = [];
     }   
     
@@ -45,7 +45,7 @@ export default class ToDoList {
      * 
      * @param {TodoListItem} itemToRemove Item to remove from the list.
      */
-    removeItem(itemToRemove) {
+    removeItem(itemToRemove) {//ToDoListItem instance
         let indexOfItem = -1;
         for (let i = 0; (i < this.items.length) && (indexOfItem < 0); i++) {
             if (this.items[i].id === itemToRemove.id) {
@@ -77,5 +77,26 @@ export default class ToDoList {
      */
     getItemAtIndex(index) {
         return this.items[index];
+    }
+
+    length(){
+        return this.items.length;
+    }
+
+    /**
+     * #Student Made
+     * Swaps the value at 2 location
+     * 
+     * @param {int} a location 1
+     * @param {int} b location 2
+     */
+    swapItemAtIndex(a, b){
+        let temp = this.items[a];
+        this.items[a] = this.items[b];
+        this.items[b] = temp;
+    }
+
+    returnItem(item, index){
+        this.items.splice(index, 0, item);
     }
 }

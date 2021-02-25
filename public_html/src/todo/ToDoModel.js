@@ -4,9 +4,14 @@ import ToDoList from './ToDoList.js'
 import ToDoListItem from './ToDoListItem.js'
 import jsTPS from '../common/jsTPS.js'
 import AddNewItem_Transaction from './transactions/AddNewItem_Transaction.js'
+import RemoveItem_Transaction from './transactions/RemoveItem_Transaction.js'
+import Move_Transaction from './transactions/Move_Transaction.js'
+import Text_Transaction from './transactions/Text_Transaction.js'
+import Date_Transaction from './transactions/Date_Transaction.js'
+import Status_Transaction from './transactions/Status_Transaction.js'
 
 /**
- * ToDoModel
+ * ToDoModel //data in the back ground
  * 
  * This class manages all the app data.
  */
@@ -76,6 +81,43 @@ export default class ToDoModel {
         this.tps.addTransaction(transaction);
     }
 
+    removeItemTransaction(itemToRemove){
+        //console.log(this.currentList.getIndexOfItem(itemToRemove));
+        let transaction = new RemoveItem_Transaction(this, itemToRemove, this.currentList.getIndexOfItem(itemToRemove));
+        this.tps.addTransaction(transaction);
+    }
+
+    upTransaction(item){
+        if(this.currentList.getIndexOfItem(item)-1 < 0){
+            return;
+        }
+        let transaction = new Move_Transaction(this, this.currentList.getIndexOfItem(item), this.currentList.getIndexOfItem(item)-1);
+        this.tps.addTransaction(transaction);
+    }
+
+    downTransaction(item){
+        if(this.currentList.getIndexOfItem(item)+1 >= this.currentList.length()){
+            return;
+        }
+        let transaction = new Move_Transaction(this, this.currentList.getIndexOfItem(item), this.currentList.getIndexOfItem(item)+1);
+        this.tps.addTransaction(transaction);
+    }
+
+    editDescriptionTransaction(item, newText){
+        let transaction = new Text_Transaction(this, item, newText);
+        this.tps.addTransaction(transaction);
+    }
+
+    editDateTransaction(item, newDate){
+        let transaction = new Date_Transaction(this, item, newDate);
+        this.tps.addTransaction(transaction);
+    }
+
+    editStatusTransaction(item, newStatus){
+        let transaction = new Status_Transaction(this, item, newStatus);
+        this.tps.addTransaction(transaction);
+    }
+
     /**
      * addNewList
      * 
@@ -104,6 +146,19 @@ export default class ToDoModel {
     }
 
     /**
+     * #student made
+     * This function adds a previously deleted item to it's original index.
+     * 
+     * @param {*} item The returning item
+     * @param {*} index the index to return to
+     */
+    addReturningItem(item, index){
+        this.currentList.returnItem(item, index);
+        this.view.viewList(this.currentList);
+        //return item;
+    }
+
+    /**
      * Makes a new list item with the provided data and adds it to the list.
      */
     loadItemIntoList(list, description, due_date, assigned_to, completed) {
@@ -117,6 +172,8 @@ export default class ToDoModel {
 
     /**
      * Load the items for the listId list into the UI.
+     * DO-THIS:
+     * Empty Transaction Stack - completed
      */
     loadList(listId) {
         let listIndex = -1;
@@ -129,6 +186,7 @@ export default class ToDoModel {
             this.currentList = listToLoad;
             this.view.viewList(this.currentList);
         }
+        this.tps.clearAllTransactions();
     }
 
     /**
@@ -136,7 +194,7 @@ export default class ToDoModel {
      */
     redo() {
         if (this.tps.hasTransactionToRedo()) {
-            this.tps.doTransaction();
+            this.tps.doTransaction();//new stuff
         }
     }   
 
@@ -169,6 +227,11 @@ export default class ToDoModel {
         this.view = initView;
     }
 
+    swapItemByIndex(a, b){
+        this.currentList.swapItemAtIndex(a,b);
+        this.view.viewList(this.currentList);
+    }
+
     /**
      * Undo the most recently done transaction if there is one.
      */
@@ -177,4 +240,19 @@ export default class ToDoModel {
             this.tps.undoTransaction();
         }
     } 
+
+    editDescription(item, newText){
+        item.setDescription(newText);
+        this.view.viewList(this.currentList);
+    }
+
+    editDueDate(item, newDate){
+        item.setDueDate(newDate);
+        this.view.viewList(this.currentList);
+    }
+
+    editStatus(item, newStatus){
+        item.setStatus(newStatus);
+        this.view.viewList(this.currentList);
+    }
 }

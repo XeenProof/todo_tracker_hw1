@@ -14,7 +14,7 @@ export default class ToDoListItem {
      */
     constructor(initId) {
         this.id = initId;
-        this.description = "Unknown";
+        this.description = "Do Stuff";
         this.dueDate = new Date().toUTCString();
         this.status = "incomplete";
     }
