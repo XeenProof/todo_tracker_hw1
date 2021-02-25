@@ -194,7 +194,7 @@ export default class ToDoModel {
      */
     redo() {
         if (this.tps.hasTransactionToRedo()) {
-            this.tps.doTransaction();//new stuff
+            this.tps.doTransaction();//new stuff 2
         }
     }   
 
