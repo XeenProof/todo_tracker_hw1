@@ -70,6 +70,10 @@
     background-color: var(--swatch-contrast);
 }
 
+.todo_button_disabled{
+    visibility: hidden;
+}
+
 .modal_button {
     cursor:pointer;
     background-color: var(--swatch-contrast);
@@ -94,15 +98,20 @@
 .modal-overlay {
     background-color: rgba(0,0,0,0.4);
 }
-/*
-.modal-button {
-    background-color: var(--button-transparent);
-    font-family: 'Consolas';
-    border: none;
-    transition: 0.1s ease-in-out;
-    color: var(--light-gray);
-    text-align: center;
-    font-size: 12pt;
+
+.item-button{
+    font-family: var(--font-primary);
+    color:white
 }
-*/
+
+.status-complete{
+    font-family: var(--font-primary);
+    color: #8ed4f8;
+}
+
+.status-incomplete{
+    font-family: var(--font-primary);
+    color:orange
+}
+
 

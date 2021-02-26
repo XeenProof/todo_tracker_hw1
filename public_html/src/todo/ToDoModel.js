@@ -79,12 +79,14 @@ export default class ToDoModel {
     addNewItemTransaction() {
         let transaction = new AddNewItem_Transaction(this);
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     removeItemTransaction(itemToRemove){
         //console.log(this.currentList.getIndexOfItem(itemToRemove));
         let transaction = new RemoveItem_Transaction(this, itemToRemove, this.currentList.getIndexOfItem(itemToRemove));
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     upTransaction(item){
@@ -93,6 +95,7 @@ export default class ToDoModel {
         }
         let transaction = new Move_Transaction(this, this.currentList.getIndexOfItem(item), this.currentList.getIndexOfItem(item)-1);
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     downTransaction(item){
@@ -101,21 +104,25 @@ export default class ToDoModel {
         }
         let transaction = new Move_Transaction(this, this.currentList.getIndexOfItem(item), this.currentList.getIndexOfItem(item)+1);
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     editDescriptionTransaction(item, newText){
         let transaction = new Text_Transaction(this, item, newText);
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     editDateTransaction(item, newDate){
         let transaction = new Date_Transaction(this, item, newDate);
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     editStatusTransaction(item, newStatus){
         let transaction = new Status_Transaction(this, item, newStatus);
         this.tps.addTransaction(transaction);
+        this.buttonCheck();
     }
 
     /**
@@ -130,8 +137,9 @@ export default class ToDoModel {
         let newList = new ToDoList(this.nextListId++);
         if (initName)
             newList.setName(initName);
-        this.toDoLists.push(newList);
-        this.view.appendNewListToView(newList);
+        this.toDoLists.unshift(newList);
+        this.view.refreshLists(this.toDoLists);
+        this.buttonCheck();
         return newList;
     }
 
@@ -155,7 +163,6 @@ export default class ToDoModel {
     addReturningItem(item, index){
         this.currentList.returnItem(item, index);
         this.view.viewList(this.currentList);
-        //return item;
     }
 
     /**
@@ -187,6 +194,7 @@ export default class ToDoModel {
             this.view.viewList(this.currentList);
         }
         this.tps.clearAllTransactions();
+        this.buttonCheck();
     }
 
     /**
@@ -194,8 +202,9 @@ export default class ToDoModel {
      */
     redo() {
         if (this.tps.hasTransactionToRedo()) {
-            this.tps.doTransaction();//new stuff 2
+            this.tps.doTransaction();
         }
+        this.buttonCheck();
     }   
 
     /**
@@ -220,6 +229,7 @@ export default class ToDoModel {
         this.currentList = null;
         this.view.clearItemsList();
         this.view.refreshLists(this.toDoLists);
+        this.buttonCheck();
     }
 
     // WE NEED THE VIEW TO UPDATE WHEN DATA CHANGES.
@@ -239,6 +249,7 @@ export default class ToDoModel {
         if (this.tps.hasTransactionToUndo()) {
             this.tps.undoTransaction();
         }
+        this.buttonCheck();
     } 
 
     editDescription(item, newText){
@@ -263,5 +274,28 @@ export default class ToDoModel {
         this.view.clearItemsList();//
         this.tps.clearAllTransactions();//temp
         this.currentList = null;
+        this.buttonCheck();
+    }
+
+    buttonCheck(){
+        this.visibility(document.getElementById("add-list-button"), this.currentList == null);
+        this.visibility(document.getElementById("undo-button"), this.tps.hasTransactionToUndo());
+        this.visibility(document.getElementById("redo-button"), this.tps.hasTransactionToRedo());
+        this.visibility(document.getElementById("delete-list-button"), !(this.currentList == null));
+        this.visibility(document.getElementById("add-item-button"), !(this.currentList == null));
+        this.visibility(document.getElementById("close-list-button"), !(this.currentList == null));
+    }
+
+    undoRedoCheck(){
+        button.style.visibility 
+    }
+
+    visibility(button, bool){
+        if(bool){
+            button.style.visibility = "visible";
+        }
+        else{
+            button.style.visibility = "hidden";
+        }
     }
 }

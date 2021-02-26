@@ -67,14 +67,12 @@ export default class ToDoView {
             // NOW BUILD ALL THE LIST ITEMS
             let listItem = list.items[i];
 
-            let newItem = this.itemToHTML(listItem);
+            let newItem = this.itemToHTML(listItem, this.visibilityConvert(!(i == 0)), this.visibilityConvert(!(i == (list.items.length-1))));
             itemsListDiv.appendChild(newItem);
-            //itemsListDiv.innerHTML += newItem;
-
         }
     }
 
-    itemToHTML(listItem){
+    itemToHTML(listItem, upVis, downVis){
         let thisController = this.controller;
         let newItem = document.createElement("div");
         newItem.setAttribute("id", "todo-list-item-" + listItem.id);
@@ -83,11 +81,9 @@ export default class ToDoView {
         //Description
         let info = document.createElement("input");
         info.setAttribute("type", "text");
-        info.setAttribute("style", "color:white");
-        info.setAttribute("style", "font-family:Lexend Exa");
         info.setAttribute("value", listItem.description);
         info.setAttribute("id", "edit-text-" + listItem.id + "-button")
-        info.setAttribute("class", "task-col todo_button");
+        info.setAttribute("class", "task-col item-button todo_button");
         newItem.appendChild(info);
         info.onchange = function(){
             thisController.editDescription(listItem, info.value);
@@ -96,10 +92,8 @@ export default class ToDoView {
         //Date WIP
         let date = document.createElement("input");
         date.setAttribute("type", "date");
-        date.setAttribute("style", "color:white");
-        date.setAttribute("style", "font-family:Lexend Exa");
         date.setAttribute("id", "edit-date-" + listItem.id + "-button")
-        date.setAttribute("class", "due-date-col todo_button");
+        date.setAttribute("class", "due-date-col item-button todo_button");
         date.setAttribute("value", listItem.dueDate);
         newItem.appendChild(date);
         date.onchange = function(){
@@ -109,24 +103,28 @@ export default class ToDoView {
         //Status
         let status = document.createElement("select");
         status.setAttribute("id", "edit-status-" + listItem.id + "-button")
-        status.setAttribute("class", "status-col todo_button");
-        status.setAttribute("style", "font-family:'Lexend Exa'");
+        //status.setAttribute("class", "status-col item-button todo_button");
 
         let complete = document.createElement("option");
         complete.setAttribute("value", "complete");
-        complete.setAttribute("style", "color:blue");
+        complete.setAttribute("class", "status-complete");
         complete.appendChild(document.createTextNode("complete"));
 
         let incomplete = document.createElement("option");
         incomplete.setAttribute("value", "incomplete");
-        incomplete.setAttribute("style", "color:orange");
+        incomplete.setAttribute("class", "status-incomplete");
         incomplete.appendChild(document.createTextNode("incomplete"));
 
         status.appendChild(complete);
         status.appendChild(incomplete);
         status.value = listItem.getStatus();
+        if(status.value == "complete"){
+            status.setAttribute("class", "status-col status-complete todo_button");
+        }
+        else{
+            status.setAttribute("class", "status-col status-incomplete todo_button");
+        }
 
-        //status.appendChild(document.createTextNode(listItem.status));
         newItem.appendChild(status);
         status.onchange = function(){
             thisController.editStatus(listItem, status.value);
@@ -141,6 +139,7 @@ export default class ToDoView {
         up.setAttribute("id", "move-item-" + listItem.id + "-up-button");
         up.setAttribute("class", "list-controls-col material-icons todo_button");
         up.appendChild(document.createTextNode("keyboard_arrow_up"));
+        up.style.visibility = upVis;
         controls.appendChild(up);
         up.onclick = function(){
             thisController.moveItemUp(listItem)
@@ -151,6 +150,7 @@ export default class ToDoView {
         down.setAttribute("id", "move-item-" + listItem.id + "-down-button");
         down.setAttribute("class", "list-controls-col material-icons todo_button");
         down.appendChild(document.createTextNode("keyboard_arrow_down"));
+        down.style.visibility = downVis;
         controls.appendChild(down);
         down.onclick = function(){
             thisController.moveItemDown(listItem)
@@ -228,6 +228,13 @@ export default class ToDoView {
         }
 
         location.appendChild(overlay);
+    }
+
+    visibilityConvert(bool){
+        if(bool){
+            return "visible";
+        }
+        return "hidden";
     }
 }
 

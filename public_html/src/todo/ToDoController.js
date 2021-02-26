@@ -12,7 +12,8 @@ export default class ToDoController {
     setModel(initModel) {
         this.model = initModel;
         let appModel = this.model;
-
+       
+        
         // SETUP ALL THE EVENT HANDLERS SINCE THEY USE THE MODEL
         document.getElementById("add-list-button").onmousedown = function() {
             appModel.addNewList();
@@ -32,6 +33,7 @@ export default class ToDoController {
         document.getElementById("close-list-button").onclick = function(){
             appModel.closeList();
         }
+        this.checkButtons();
     }
     
     // PROVIDES THE RESPONSE TO WHEN A USER CLICKS ON A LIST TO LOAD
@@ -66,5 +68,9 @@ export default class ToDoController {
 
     deleteList(){
         this.model.removeCurrentList();
+    }
+
+    checkButtons(){
+        this.model.buttonCheck();
     }
 }
