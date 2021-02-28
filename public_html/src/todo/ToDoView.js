@@ -19,15 +19,18 @@ export default class ToDoView {
         let newListId = "todo-list-" + newList.id;
         let listElement = document.createElement("div");
         listElement.setAttribute("id", newListId);
-        listElement.setAttribute("class", "todo_button");
+        listElement.setAttribute("class", "list_button");
         listElement.appendChild(document.createTextNode(newList.name));
 
         listsElement.appendChild(listElement);
-
+        
         // SETUP THE HANDLER FOR WHEN SOMEONE MOUSE CLICKS ON OUR LIST
         let thisController = this.controller;
         listElement.onmousedown = function() {
             thisController.handleLoadList(newList.id);
+        }
+        if(newList == thisController.getCurrentList()){
+            listElement.setAttribute("class", "current_list");
         }
     }
 
@@ -72,6 +75,7 @@ export default class ToDoView {
         }
     }
 
+    //Turns item info into HTML
     itemToHTML(listItem, upVis, downVis){
         let thisController = this.controller;
         let newItem = document.createElement("div");
@@ -83,7 +87,7 @@ export default class ToDoView {
         info.setAttribute("type", "text");
         info.setAttribute("value", listItem.description);
         info.setAttribute("id", "edit-text-" + listItem.id + "-button")
-        info.setAttribute("class", "task-col item-button todo_button");
+        info.setAttribute("class", "task-col item-button");
         newItem.appendChild(info);
         info.onchange = function(){
             thisController.editDescription(listItem, info.value);
@@ -93,7 +97,7 @@ export default class ToDoView {
         let date = document.createElement("input");
         date.setAttribute("type", "date");
         date.setAttribute("id", "edit-date-" + listItem.id + "-button")
-        date.setAttribute("class", "due-date-col item-button todo_button");
+        date.setAttribute("class", "due-date-col item-button");
         date.setAttribute("value", listItem.dueDate);
         newItem.appendChild(date);
         date.onchange = function(){
@@ -119,10 +123,10 @@ export default class ToDoView {
         status.appendChild(incomplete);
         status.value = listItem.getStatus();
         if(status.value == "complete"){
-            status.setAttribute("class", "status-col status-complete todo_button");
+            status.setAttribute("class", "status-col status-complete item-button");
         }
         else{
-            status.setAttribute("class", "status-col status-incomplete todo_button");
+            status.setAttribute("class", "status-col status-incomplete item-button");
         }
 
         newItem.appendChild(status);
@@ -185,6 +189,7 @@ export default class ToDoView {
         this.controller = initController;
     }
 
+    //creates a confirmation modal for deleting a list
     confirmModal(){
         var location = document.getElementById("grid-container");
         
@@ -230,6 +235,10 @@ export default class ToDoView {
         location.appendChild(overlay);
     }
 
+    /**
+     * converts a boolean to visible or invisible
+     * @param {boolean} bool the boolean to convert
+     */
     visibilityConvert(bool){
         if(bool){
             return "visible";

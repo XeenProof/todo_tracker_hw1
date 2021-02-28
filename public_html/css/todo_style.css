@@ -70,10 +70,6 @@
     background-color: var(--swatch-contrast);
 }
 
-.todo_button_disabled{
-    visibility: hidden;
-}
-
 .modal_button {
     cursor:pointer;
     background-color: var(--swatch-contrast);
@@ -100,8 +96,14 @@
 }
 
 .item-button{
+    cursor:pointer;
+    background-color: var(--swatch-complement);
     font-family: var(--font-primary);
     color:white
+}
+
+.item-button:hover{
+    background-color: var(--swatch-contrast);
 }
 
 .status-complete{
@@ -111,7 +113,20 @@
 
 .status-incomplete{
     font-family: var(--font-primary);
-    color:orange
+    color:yellow
+}
+
+.list_button {
+    cursor:pointer;
+    background-color: var(--swatch-complement);
+}
+
+.list_button:hover {
+    background-color: var(--swatch-contrast);
+}
+
+.current_list{
+    background-color: var(--swatch-accent);
 }
 
 

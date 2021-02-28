@@ -39,15 +39,18 @@
 }
 
 #todo-list-items-div{
+    
     height: 150%;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .list-item-card {
     height: 8%;
     display: flex;
     flex-direction: row;
+    
 }
 
 .task-col {
@@ -119,5 +122,8 @@
 }
 
 .item-button {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
 
 }

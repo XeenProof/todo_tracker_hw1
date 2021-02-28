@@ -82,6 +82,10 @@ export default class ToDoModel {
         this.buttonCheck();
     }
 
+    /**
+     * Creates a new transaction for removing an item and adds it to the transaction stack.
+     * @param {*} itemToRemove 
+     */
     removeItemTransaction(itemToRemove){
         //console.log(this.currentList.getIndexOfItem(itemToRemove));
         let transaction = new RemoveItem_Transaction(this, itemToRemove, this.currentList.getIndexOfItem(itemToRemove));
@@ -89,6 +93,10 @@ export default class ToDoModel {
         this.buttonCheck();
     }
 
+    /**
+     * Creates a new transaction for moving an item up and adds it to the transaction stack.
+     * @param {*} item item to move up
+     */
     upTransaction(item){
         if(this.currentList.getIndexOfItem(item)-1 < 0){
             return;
@@ -98,6 +106,10 @@ export default class ToDoModel {
         this.buttonCheck();
     }
 
+    /**
+     * Creates a new transaction for moving an item down and adds it to the transaction stack.
+     * @param {*} item 
+     */
     downTransaction(item){
         if(this.currentList.getIndexOfItem(item)+1 >= this.currentList.length()){
             return;
@@ -107,18 +119,33 @@ export default class ToDoModel {
         this.buttonCheck();
     }
 
+    /**
+     * Creates a new transaction for editing the descrption of an item and adds it to the transaction stack.
+     * @param {*} item 
+     * @param {*} newText 
+     */
     editDescriptionTransaction(item, newText){
         let transaction = new Text_Transaction(this, item, newText);
         this.tps.addTransaction(transaction);
         this.buttonCheck();
     }
 
+    /**
+     * Creates a new transaction for editing the due date of an item and adds it to the transaction stack.
+     * @param {*} item 
+     * @param {*} newDate 
+     */
     editDateTransaction(item, newDate){
         let transaction = new Date_Transaction(this, item, newDate);
         this.tps.addTransaction(transaction);
         this.buttonCheck();
     }
 
+    /**
+     * Creates a new transaction for editing the status of an item and adds it to the transaction stack.
+     * @param {*} item 
+     * @param {*} newStatus 
+     */
     editStatusTransaction(item, newStatus){
         let transaction = new Status_Transaction(this, item, newStatus);
         this.tps.addTransaction(transaction);
@@ -137,7 +164,7 @@ export default class ToDoModel {
         let newList = new ToDoList(this.nextListId++);
         if (initName)
             newList.setName(initName);
-        this.toDoLists.unshift(newList);
+        this.toDoLists.push(newList);
         this.view.refreshLists(this.toDoLists);
         this.buttonCheck();
         return newList;
@@ -183,15 +210,20 @@ export default class ToDoModel {
      * Empty Transaction Stack - completed
      */
     loadList(listId) {
+        //finds list
         let listIndex = -1;
         for (let i = 0; (i < this.toDoLists.length) && (listIndex < 0); i++) {
             if (this.toDoLists[i].id === listId)
                 listIndex = i;
         }
+        //loads this list
         if (listIndex >= 0) {
             let listToLoad = this.toDoLists[listIndex];
-            this.currentList = listToLoad;
+            this.setCurrentList(listToLoad);
+            //this.currentList = listToLoad;//change to set current list
             this.view.viewList(this.currentList);
+            this.view.refreshLists(this.toDoLists);
+            //set currentlist 
         }
         this.tps.clearAllTransactions();
         this.buttonCheck();
@@ -237,9 +269,27 @@ export default class ToDoModel {
         this.view = initView;
     }
 
+    /**
+     * switches 2 items on the current list
+     * @param {*} a 
+     * @param {*} b 
+     */
     swapItemByIndex(a, b){
         this.currentList.swapItemAtIndex(a,b);
         this.view.viewList(this.currentList);
+    }
+
+    /**
+     * Sets the current list variable and 
+     * @param {*} list 
+     */
+    setCurrentList(list){
+        this.currentList = list;
+        var index = this.toDoLists.indexOf(this.currentList);
+        if(index > -1){
+            this.toDoLists.splice(index, 1);
+            this.toDoLists.unshift(this.currentList);
+        }
     }
 
     /**
@@ -252,16 +302,31 @@ export default class ToDoModel {
         this.buttonCheck();
     } 
 
+    /**
+     * edits the Description of the item
+     * @param {*} item 
+     * @param {*} newText 
+     */
     editDescription(item, newText){
         item.setDescription(newText);
         this.view.viewList(this.currentList);
     }
 
+    /**
+     * edits the due date of the item
+     * @param {*} item 
+     * @param {*} newDate 
+     */
     editDueDate(item, newDate){
         item.setDueDate(newDate);
         this.view.viewList(this.currentList);
     }
 
+    /**
+     * edits the status of the item
+     * @param {*} item 
+     * @param {*} newStatus 
+     */
     editStatus(item, newStatus){
         item.setStatus(newStatus);
         this.view.viewList(this.currentList);
@@ -274,9 +339,13 @@ export default class ToDoModel {
         this.view.clearItemsList();//
         this.tps.clearAllTransactions();//temp
         this.currentList = null;
+        this.view.refreshLists(this.toDoLists);
         this.buttonCheck();
     }
 
+    /**
+     * checks which button should be visible and which should not
+     */
     buttonCheck(){
         this.visibility(document.getElementById("add-list-button"), this.currentList == null);
         this.visibility(document.getElementById("undo-button"), this.tps.hasTransactionToUndo());
@@ -286,10 +355,18 @@ export default class ToDoModel {
         this.visibility(document.getElementById("close-list-button"), !(this.currentList == null));
     }
 
-    undoRedoCheck(){
-        button.style.visibility 
+    /**
+     * returns the current list
+     */
+    getCurrentList(){
+        return this.currentList;
     }
 
+    /**
+     * sets the visibility of the button
+     * @param {*} button 
+     * @param {*} bool 
+     */
     visibility(button, bool){
         if(bool){
             button.style.visibility = "visible";
