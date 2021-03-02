@@ -46,19 +46,19 @@
 }
 
 #left-sidebar-header {
-    border-bottom: dotted;
+    border-bottom: 2px dotted;
 }
 
-#todo-list-table-header {
-    border-bottom: dotted;
+#todo-list-header-card {
+    border-bottom: 2px dotted;
 }
 
-.list-header-card {
-    border-bottom: dotted;
-}
+/* .list-header-card {
+    border-bottom: 2px dotted;
+} */
 
 .list-item-card {
-    border-bottom: solid;
+    border-bottom: 1px solid;
 }
 
 .todo_button {
@@ -76,8 +76,8 @@
 }
 
 .modal_button:hover {
-    color:green
-    /*background-color: var(--swatch-complement);*/
+    /* color:green */
+    background-color: var(--swatch-complement);
 }
 
 .modal {

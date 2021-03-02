@@ -19,7 +19,7 @@
 }
 
 #left-sidebar-header {
-    display: grid;
+    display: flex;
     grid-template-columns: 60% 40%;
 }
 
@@ -40,14 +40,37 @@
 
 #todo-list-items-div{
     
-    height: 150%;
+    height: 700px;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: scroll;
+    /* margin-left: 1.5%;
+    margin-right: 3%; */
+}
+
+/* #todo-list-items-div::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: var(--darkblue-gray);
+}
+
+#todo-list-items-div::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 8px;
+    background-color: var(--blue-gray);
+} */
+
+.list-header-card {
+    height: 8%;
+    display: flex;
+    flex-direction: row;
+    /* margin-left: 1.5%;
+    margin-right: 3%; */
 }
 
 .list-item-card {
-    height: 8%;
+    height: 50px;
     display: flex;
     flex-direction: row;
     
@@ -81,7 +104,6 @@
     z-index: 1;
     left: 35%;
     top: 25%;
-    /* padding: 1%; */
     width: 30%;
     animation: appear_in .3s ease;
 }
@@ -104,7 +126,6 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 .modal-button {
